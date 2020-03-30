@@ -49,7 +49,12 @@
 						component.$watch(attribute, (value) => {
 							// @todo: move to reactive factory
 							if (attribute === 'selectedResource') {
-								value = (value && value.value) || null;
+								if (value && component.field['relationFields']) {
+									const relationAttributeIndex = this.field.dependencies.findIndex(el => el.field && el.field === component.field.attribute);
+									value = component.field['relationFields'][value.value][this.field.dependencies[relationAttributeIndex]['property']];
+								} else {
+									value = null;
+								}
 							}
 							this.dependencyValues[component.field.attribute] = value;
 							// @todo: change value as argument for `updateDependencyStatus`
