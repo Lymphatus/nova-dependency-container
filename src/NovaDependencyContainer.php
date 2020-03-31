@@ -158,6 +158,10 @@ class NovaDependencyContainer extends Field
                     $this->meta['dependencies'][$index]['satisfied'] = true;
                     continue;
                 }
+                //BelongsTo
+                if (isset($resource->{$dependency['field']}) && isset($resource->{$dependency['field']}->{$dependency['property']})) {
+                    $this->meta['dependencies'][$index]['satisfied'] = $dependency['value'] == $resource->{$dependency['field']}->{$dependency['property']};
+                }
                 // @todo: quickfix for MorphTo
                 $morphable_attribute = $resource->getAttribute($dependency['property'].'_type');
                 if($morphable_attribute !== null && Str::endsWith($morphable_attribute, '\\'.$dependency['value'])) {
